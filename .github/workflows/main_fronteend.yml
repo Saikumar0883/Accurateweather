@@ -70,5 +70,5 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'Frontend'
+          app-name: 'FronteEnd'
           package: .
