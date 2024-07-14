@@ -52,7 +52,7 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-      
+
       - name: List files for debugging
         run: ls -la
 
@@ -63,9 +63,12 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_81B2DE5AB84B47B7844303261A4A7DD5 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_6EBBF456593249E38A2C92854795BB9F }}
 
+      - name: List Azure Web Apps
+        run: az webapp list --query "[].{name:name, resourceGroup:resourceGroup}" --output table
+
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'frontend'
+          app-name: 'Frontend'
           package: .
