@@ -52,7 +52,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'FronteEnd'
+          app-name: 'Accurateweather'
           slot-name: 'Production'
           package: ${{ github.workspace }}/production.zip
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
