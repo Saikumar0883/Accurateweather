@@ -1,4 +1,7 @@
-name: Build and deploy Node.js app to Azure Web App - Accurateweather
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy Node.js app to Azure Web App - FronteEnd
 
 on:
   push:
@@ -8,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -22,20 +25,15 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-
-      - name: Archive production artifacts
-        run: |
-          mkdir build
-          mv * build
-          cd build
-          zip -r ../build.zip .
-        shell: bash
+        
+      - name: Zip artifact for deployment
+        run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: build.zip
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -48,25 +46,24 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
           name: node-app
-          path: .
 
-      - name: Unzip artifact
-        run: unzip build.zip
-
+      - name: Unzip artifact for deployment
+        run: unzip release.zip
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_89F1A76772C64B138EA49BE21D0BC708 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6D8ADB3CA7504C3A83093626F9C8BB9A }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_227534A9E4B744DAB4F0EF0F26280D16 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A26516FAB2A04575B5755E2F36389512 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_81B2DE5AB84B47B7844303261A4A7DD5 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_6EBBF456593249E38A2C92854795BB9F }}
 
       - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
         with:
-          app-name: 'Accurateweather'
+          app-name: 'FronteEnd'
           slot-name: 'Production'
           package: .
