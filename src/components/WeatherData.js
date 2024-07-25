@@ -251,7 +251,17 @@ const WeatherData = () => {
       <div className="Buttons">
         <GeoLocation onCitySelect={handleCitySelect} />
         <button
-          style={{ ...buttonStyle }}
+           style={{
+            backgroundColor: !selectedCity ? "#aaa" : "#27AE60", // Dim color if disabled
+            color: !selectedCity ? "#666" : "white", // Dim text color if disabled
+            border: "none",
+            padding: "15px 20px",
+            borderRadius: "20px",
+            marginLeft: "10px",
+            cursor: !selectedCity ? "not-allowed" : "pointer", // Change cursor if disabled
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            opacity: !selectedCity ? 0.5 : 1, // Dim the button if disabled
+          }}
           onClick={handleClick}
           disabled={!selectedCity}
         >
