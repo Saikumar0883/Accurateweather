@@ -9,7 +9,8 @@
 }
 
 body {
-  font-family: 'Arial', sans-serif; /* Example font, adjust as needed */
+  font-family: 'Arial', sans-serif;
+  /* Example font, adjust as needed */
   color: white;
 }
 
@@ -41,3 +42,53 @@ header nav {
   gap: 15px;
 }
 
+.Current {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  width: 80%;
+
+  flex-direction: row;
+}
+
+@media (max-width: 600px) {
+  .Current {
+    flex-direction: column;
+    padding: 10px;
+  }
+}
+
+.Buttons {
+  display: flex;
+  align-items: center;
+  width: 80%;
+  margin-bottom: 30px;
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .Buttons {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .Buttons>* {
+    width: 100%;
+  }
+}
+
+.forecastStyle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+}
+@media (max-width: 600px) {
+  .forecastStyle {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+}

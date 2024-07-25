@@ -3,7 +3,9 @@ import GeoLocation from "./GeoLocation";
 import { API_URL } from "../config";
 import sumbro from "./sun.png";
 import { UserContext } from "./userContext";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../App.css";
 const emojiStyle = {
   fontSize: "1.5em",
   marginRight: "5px",
@@ -85,14 +87,6 @@ const WeatherData = () => {
     padding: "20px",
   };
 
-  const headerStyle = {
-    display: "flex",
-    alignItems: "center",
-    width: "100%",
-    padding: "10px",
-    marginBottom: "20px",
-  };
-
   const buttonStyle = {
     backgroundColor: "#27AE60",
     color: "white",
@@ -133,29 +127,27 @@ const WeatherData = () => {
     margin: "10px 0",
   };
 
-  const forecastStyle = {
-    display: "flex",
-    justifyContent: "space-between",
-    width: "100%",
-  };
 
   const forecastSectionStyle = {
     backgroundColor: "#444",
     borderRadius: "20px",
     padding: "20px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    width: "48%",
-    marginRight: "25px",
+    width: "100%",
   };
+
   const handleCitySelect = (city) => {
     setSelectedCity(city);
   };
+
   const handleClick = async () => {
     if (!selectedCity) {
       console.error("No city selected");
       return;
     }
     const { lat, lon, name: city } = selectedCity;
+    const loadingToast = toast.loading("Fetching weather data...");
+
     try {
       const response = await fetch(
         `${API_URL}/current-weather?lat=${lat}&long=${lon}&city=${city}`
@@ -163,13 +155,28 @@ const WeatherData = () => {
       if (response.ok) {
         const val = await response.json();
         setWeatherData(val);
-        console.log(val);
-        // console.log(weatherData);
+        toast.update(loadingToast, {
+          render: "Weather data fetched successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
       } else {
-        console.error("Failed to fetch weather data");
+        toast.update(loadingToast, {
+          render: "Failed to fetch weather data.",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
       }
     } catch (error) {
       console.error("Error fetching weather data:", error);
+      toast.update(loadingToast, {
+        render: "Error fetching weather data.",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
 
@@ -178,6 +185,8 @@ const WeatherData = () => {
     const lat = userInfo.MyLocation.latitude;
     const lon = userInfo.MyLocation.longitude;
     const city = userInfo.MyLocation.city;
+    const loadingToast = toast.loading("Fetching weather data...");
+
     try {
       const response = await fetch(
         `${API_URL}/current-weather?lat=${lat}&long=${lon}&city=${city}`
@@ -185,13 +194,28 @@ const WeatherData = () => {
       if (response.ok) {
         const val = await response.json();
         setWeatherData(val);
-        console.log(val);
-        // console.log(weatherData);
+        toast.update(loadingToast, {
+          render: "Weather data fetched successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
       } else {
-        console.error("Failed to fetch weather data");
+        toast.update(loadingToast, {
+          render: "Failed to fetch weather data.",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
       }
     } catch (error) {
       console.error("Error fetching weather data:", error);
+      toast.update(loadingToast, {
+        render: "Error fetching weather data.",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
   const formatDate = (dateString) => {
@@ -215,6 +239,7 @@ const WeatherData = () => {
         <div
           style={{
             marginBottom: "20px",
+            textAlign: "center",
           }}
         >
           <button style={{ ...buttonStyle }} onClick={handleClick1}>
@@ -222,7 +247,8 @@ const WeatherData = () => {
           </button>
         </div>
       )}
-      <header style={headerStyle}>
+
+      <div className="Buttons">
         <GeoLocation onCitySelect={handleCitySelect} />
         <button
           style={{ ...buttonStyle }}
@@ -231,21 +257,16 @@ const WeatherData = () => {
         >
           Get Weather
         </button>
-      </header>
+      </div>
+
       {weatherData && (
         <>
           <main style={mainStyle}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
+            <div className="Current">
               <div style={{ ...cardStyle, textAlign: "center" }}>
                 <div style={{ height: "150%" }}>
-                  <h1 style={{ fontSize: "2em" }}>{weatherData.city}</h1>
-                  <h2 style={{ fontSize: "4em" }}>
+                  <h1 style={{ fontSize: "3em" }}>{weatherData.city}</h1>
+                  <h2 style={{ fontSize: "2em" }}>
                     {weatherData
                       ? new Date().toLocaleTimeString([], {
                           hour: "2-digit",
@@ -287,47 +308,7 @@ const WeatherData = () => {
             </div>
 
             {weatherData && (
-              <div style={forecastStyle}>
-                <div style={forecastSectionStyle}>
-                  <div>
-                    <h3 style={{ textAlign: "center" }}>10 Days Forecast:</h3>
-                    <ul
-                      style={{
-                        listStyle: "none",
-                        margin: "0",
-                        padding: "0",
-                        paddingTop: "10px",
-                      }}
-                    >
-                      {weatherData.tenDaysForecast.tenDaysForecast.map(
-                        (item, index) => (
-                          <li
-                            key={index}
-                            style={{
-                              backgroundColor: "#444",
-                              // padding: "5px", // Padding around the text
-                              borderRadius: "10px", // Rounded corners
-                              display: "flex", // Flexbox for alignment
-                              alignItems: "center", // Center items vertically
-                              justifyContent: "space-evenly", // Space items out
-                              fontSize: "0.8em", // Slightly larger text
-                              // boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)", // Subtle shadow for depth
-                              marginBottom: "10px", // Space between items
-                            }}
-                          >
-                            <span>
-                              {formatDate(item.date)} {item.temperature}°C
-                              {getTemperatureEmoji(item.temperature)}
-                            </span>
-                            {item.description.toUpperCase()} -{" "}
-                            {getCloudEmoji(item.description)}
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </div>
-                </div>
-
+              <div className="forecastStyle">
                 <div style={forecastSectionStyle}>
                   <div>
                     <h3
@@ -362,6 +343,43 @@ const WeatherData = () => {
                           >
                             <span>
                               {item.time} - {item.temperature}°C
+                              {getTemperatureEmoji(item.temperature)}
+                            </span>
+                            {item.description.toUpperCase()} -{" "}
+                            {getCloudEmoji(item.description)}
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </div>
+                </div>
+                <div style={forecastSectionStyle}>
+                  <div>
+                    <h3 style={{ textAlign: "center" }}>10 Days Forecast:</h3>
+                    <ul
+                      style={{
+                        listStyle: "none",
+                        margin: "0",
+                        padding: "0",
+                        paddingTop: "10px",
+                      }}
+                    >
+                      {weatherData.tenDaysForecast.tenDaysForecast.map(
+                        (item, index) => (
+                          <li
+                            key={index}
+                            style={{
+                              backgroundColor: "#444",
+                              borderRadius: "10px", 
+                              display: "flex",
+                              alignItems: "center", 
+                              justifyContent: "space-evenly",
+                              fontSize: "0.8em",
+                              marginBottom: "10px", 
+                            }}
+                          >
+                            <span>
+                              {formatDate(item.date)} {item.temperature}°C
                               {getTemperatureEmoji(item.temperature)}
                             </span>
                             {item.description.toUpperCase()} -{" "}
