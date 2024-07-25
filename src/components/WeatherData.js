@@ -242,9 +242,11 @@ const WeatherData = () => {
             textAlign: "center",
           }}
         >
+          {userInfo.MyLocation && (
           <button style={{ ...buttonStyle }} onClick={handleClick1}>
             Get Weather for {userInfo.MyLocation.city}
           </button>
+          )}
         </div>
       )}
 
