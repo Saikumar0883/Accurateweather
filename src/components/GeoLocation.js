@@ -13,6 +13,7 @@ const GeoLocation = ({ onCitySelect }) => {
 
   const handleSearch = async () => {
     try {
+      console.log(`${GL_API}?q=${city}&limit=10&appid=${APPID}`);
       const response = await fetch(
         `${GL_API}?q=${city}&limit=10&appid=${APPID}`
       );
@@ -180,7 +181,7 @@ const GeoLocation = ({ onCitySelect }) => {
             border: "1px solid #ddd",
             backgroundColor: "#fff",
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-            marginLeft: '30px',
+            marginLeft: '12%',
             color:'black'
           }}
         >
