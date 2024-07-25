@@ -275,8 +275,8 @@ const WeatherData = () => {
             <div className="Current">
               <div style={{ ...cardStyle, textAlign: "center" }}>
                 <div style={{ height: "150%" }}>
-                  <h1 style={{ fontSize: "3em" }}>{weatherData.city}</h1>
-                  <h2 style={{ fontSize: "2em" }}>
+                  <h1 style={{ fontSize: "1.5em" }}>{weatherData.city}</h1>
+                  <h2 style={{ fontSize: "0.8em" }}>
                     {weatherData
                       ? new Date().toLocaleTimeString([], {
                           hour: "2-digit",
